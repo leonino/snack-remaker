@@ -42,6 +42,14 @@ function update(event) {
   if (event.keyCode == 40 && direction != "up") direction = "down";
 }
 
+function houveChoque() {
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[i].x == snake[0].x && snake[i].y == snake[0].y)
+      return true;
+  }
+  return false;
+}
+
 function iniciarJogo() {
 
   if (snake[0].x > (15 * box) && direction == 'right') snake[0].x = 0;
@@ -61,17 +69,24 @@ function iniciarJogo() {
   if (direction == "up") snakeY -= box;
   if (direction == "down") snakeY += box;
 
-  
+
   let newHead = {
     x: snakeX,
     y: snakeY
   };
-  if(food.x == newHead.x && food.y == newHead.y) {
+
+  if (food.x == newHead.x && food.y == newHead.y) {
     food = novaComida();
   } else {
     snake.pop();
   }
-  
+
+  if(houveChoque()) {
+    console.log("Houve CHOQUE!!!");
+    clearInterval(jogo);
+    alert("GAME OVER :(");
+  };
+
   snake.unshift(newHead);
 
 }
